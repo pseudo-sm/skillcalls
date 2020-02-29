@@ -25,7 +25,7 @@ SECRET_KEY = '_nla!$k9i8q@$7j==$t+c((f*$rx50+-myk7^(r(9#i8qj42fl'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
