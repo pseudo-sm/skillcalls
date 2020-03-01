@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "144479902537",
+    "firebase_url": "https://skillcallsdb.firebaseio.com",
+    "project_id": "skillcallsdb",
+    "storage_bucket": "skillcallsdb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:144479902537:android:f7ac09d8ab48c7e6199898",
+        "android_client_info": {
+          "package_name": "com.skillcalls"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "144479902537-iib517ej79djjn2oj95bvr30a51ulnmf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBsgnKm5KJTOrAYfUJhxIEbRbqNmQzL0j0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "144479902537-iib517ej79djjn2oj95bvr30a51ulnmf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
