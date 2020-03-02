@@ -33,4 +33,6 @@ urlpatterns = [
     path('get-active-bookings/',views.get_active_bookings,name="get_active_bookings"),
     path('react-booking/',views.react_booking,name="react_booking"),
     path('recur-checking/',views.recur_checking,name="recur_checking"),
+    path('fetch-accepted-provider/',views.fetch_accepted_provider,name="fetch_accepted_provider"),
+    path('get-booking-location/',views.get_booking_location,name="get_booking_location"),
 ]

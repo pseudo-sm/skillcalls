@@ -4,14 +4,14 @@ from .models import *
 import json
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib import auth
-import firebase_admin
-from firebase_admin import db
-# Create your views here.
-from firebase_admin import credentials
-if (not len(firebase_admin._apps)):
-    cred = credentials.Certificate('api/service-account.json') 
-    default_app = firebase_admin.initialize_app(cred,{'databaseURL': 'https://skillcallsdb-eaa49.firebaseio.com/'})
-db = db.reference()
+# import firebase_admin
+# from firebase_admin import db
+# # Create your views here.
+# from firebase_admin import credentials
+# if (not len(firebase_admin._apps)):
+#     cred = credentials.Certificate('api/service-account.json')
+#     default_app = firebase_admin.initialize_app(cred,{'databaseURL': 'https://skillcallsdb-eaa49.firebaseio.com/'})
+# db = db.reference()
 # print(db.child("test").get())
 def listener(event):
     print(event.event_type)  # can be 'put' or 'patch'
@@ -145,7 +145,7 @@ def book_service(auth_id,nearest,media,description,sub_category_objects):
             scb.save()
     for each_provider in nearest:
         this_service_provider = ServiceProvider.objects.get(id=each_provider)
-        db.child("service_provider").child(str(this_service_provider.id)).update({"booking":booking.id})
+        # db.child("service_provider").child(str(this_service_provider.id)).update({"booking":booking.id})
         this_service_provider.active_booking = booking.id
         this_service_provider.save()
     return JsonResponse({"booking_id":booking.id},safe=False)
@@ -191,8 +191,7 @@ def get_active_bookings(request):
         this_booking = list(Booking.objects.filter(id=service_provider.active_booking).values("id","customer__first_name","customer__address","id","customer__phone","media","description","customer__username"))[0]
     else:
         return JsonResponse(False,safe=False)
-    print(this_booking)
-    subcats = SubCategoryBooking.objects.values_list("sub_category__name").filter(booking=this_booking["id"]) 
+    subcats = SubCategoryBooking.objects.values_list("sub_category__name").filter(booking=this_booking["id"])
     this_booking["sub_categories"] = list(subcats)
     return JsonResponse([this_booking],safe=False)
 
@@ -202,23 +201,45 @@ def react_booking(request):
     booking_id = request.GET.get("booking_id")
     auth_id = request.GET.get("auth_id")
     status = request.GET.get("status")
+    print('taleeee')
+    print(auth_id)
+    print('upare')
     this_service_provider=ServiceProvider.objects.get(id=auth_id)
     this_booking = Booking.objects.get(id=booking_id)
     if this_booking.status == "0" :
         this_booking.status = status
-        this_booking.minimum_amount = minimum_amount
+        if minimum_amount == "":
+            this_booking.minimum_amount = "No minimum amount specified"
+        else:
+            this_booking.minimum_amount = minimum_amount
         this_booking.service_provider = this_service_provider
         this_booking.save()
     else:
         this_service_provider.active_booking = "-"
         return JsonResponse({"status":False},safe=False)
-    return JsonResponse({"status":True,"booking_id":this_booking.id},safe=False)
+    return JsonResponse({"status":True},safe=False)
 
 def recur_checking(request):
     booking_id = request.GET.get("booking_id")
     this_booking = Booking.objects.get(id=booking_id)
-    if this_booking.status == 1:
+    if this_booking.status == "1":
         return JsonResponse(True,safe=False)
     else:
+        this_booking.status = "2"
         return JsonResponse(False,safe=False)
 
+def fetch_accepted_provider(request):
+    booking_id = request.GET.get("booking_id")
+    lat = request.GET.get("lat")
+    lon = request.GET.get("lon")
+    this_booking = Booking.objects.filter(id=booking_id).values("service_provider__first_name","service_provider__mobile","minimum_amount")
+    booking = Booking.objects.get(id=booking_id)
+    booking.lat = lat
+    booking.lon = lon
+    booking.save()
+    return JsonResponse(list(this_booking),safe=False)
+
+def get_booking_location(request):
+    booking_id = request.GET.get("booking_id")
+    booking = Booking.objects.get(id=booking_id)
+    return JsonResponse({"lat":float(booking.lat),"lon":float(booking.lon)})

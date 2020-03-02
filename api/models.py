@@ -99,6 +99,8 @@ class Booking(models.Model):
     media = models.ImageField(upload_to="bookings/",null=True,blank=True)
     description = models.TextField(null=True,blank=True)
     minimum_amount = models.CharField(max_length=100,null=True,blank=True)
+    lat = models.CharField(max_length=100,null=True,blank=True)
+    lon = models.CharField(max_length=100,null=True,blank=True)
     def __str__(self):
         return str(self.id)
 
