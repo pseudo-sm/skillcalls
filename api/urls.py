@@ -36,3 +36,8 @@ urlpatterns = [
     path('fetch-accepted-provider/',views.fetch_accepted_provider,name="fetch_accepted_provider"),
     path('get-booking-location/',views.get_booking_location,name="get_booking_location"),
 ]
+
+from django.conf.urls.static import static
+from django.conf import settings
+
+urlpatterns += static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
